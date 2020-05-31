@@ -1,0 +1,9 @@
+C:\Users\User\Documents\Software\C#\EagleEye FileWatcher\EagleEye Fontend\bin\Debug\EagleEye Fontend.exe.config
+C:\Users\User\Documents\Software\C#\EagleEye FileWatcher\EagleEye Fontend\bin\Debug\EagleEye Fontend.exe
+C:\Users\User\Documents\Software\C#\EagleEye FileWatcher\EagleEye Fontend\bin\Debug\EagleEye Fontend.pdb
+C:\Users\User\Documents\Software\C#\EagleEye FileWatcher\EagleEye Fontend\obj\Debug\EagleEye Fontend.csprojAssemblyReference.cache
+C:\Users\User\Documents\Software\C#\EagleEye FileWatcher\EagleEye Fontend\obj\Debug\EagleEye_Fontend.frmMain.resources
+C:\Users\User\Documents\Software\C#\EagleEye FileWatcher\EagleEye Fontend\obj\Debug\EagleEye_Fontend.Properties.Resources.resources
+C:\Users\User\Documents\Software\C#\EagleEye FileWatcher\EagleEye Fontend\obj\Debug\EagleEye Fontend.csproj.GenerateResource.cache
+C:\Users\User\Documents\Software\C#\EagleEye FileWatcher\EagleEye Fontend\obj\Debug\EagleEye Fontend.exe
+C:\Users\User\Documents\Software\C#\EagleEye FileWatcher\EagleEye Fontend\obj\Debug\EagleEye Fontend.pdb
