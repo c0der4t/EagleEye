@@ -12477,4 +12477,7 @@
   <metadata name="dlgBrowseFile.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>475, 14</value>
   </metadata>
+  <metadata name="tmrToastTimeout.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>602, 14</value>
+  </metadata>
 </root>

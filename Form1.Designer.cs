@@ -58,6 +58,7 @@
             this.EagleEye = new System.IO.FileSystemWatcher();
             this.tmrTriggerChain = new System.Windows.Forms.Timer(this.components);
             this.dlgBrowseFile = new System.Windows.Forms.OpenFileDialog();
+            this.tmrToastTimeout = new System.Windows.Forms.Timer(this.components);
             this.pnlSettings.SuspendLayout();
             this.pnlError.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -138,17 +139,19 @@
             // 
             // btnBrowseFile
             // 
+            this.btnBrowseFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBrowseFile.Location = new System.Drawing.Point(598, 131);
             this.btnBrowseFile.Name = "btnBrowseFile";
             this.btnBrowseFile.Size = new System.Drawing.Size(31, 23);
             this.btnBrowseFile.TabIndex = 19;
             this.btnBrowseFile.Text = "...";
+            this.btnBrowseFile.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnBrowseFile.UseVisualStyleBackColor = true;
             this.btnBrowseFile.Click += new System.EventHandler(this.btnBrowseFile_Click);
             // 
             // pnlToast
             // 
-            this.pnlToast.BackColor = System.Drawing.Color.Firebrick;
+            this.pnlToast.BackColor = System.Drawing.Color.Gold;
             this.pnlToast.Controls.Add(this.lblToast);
             this.pnlToast.Location = new System.Drawing.Point(0, 0);
             this.pnlToast.Name = "pnlToast";
@@ -256,11 +259,13 @@
             // 
             // btnBrowse
             // 
+            this.btnBrowse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBrowse.Location = new System.Drawing.Point(598, 53);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(31, 23);
             this.btnBrowse.TabIndex = 6;
             this.btnBrowse.Text = "...";
+            this.btnBrowse.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
             // 
@@ -339,6 +344,11 @@
             // 
             this.dlgBrowseFile.Title = "Select the file to watch";
             // 
+            // tmrToastTimeout
+            // 
+            this.tmrToastTimeout.Interval = 2500;
+            this.tmrToastTimeout.Tick += new System.EventHandler(this.tmrToastTimeout_Tick);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -354,6 +364,7 @@
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "EagleEye FileWatcher FE";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.Resize += new System.EventHandler(this.frmMain_Resize);
             this.pnlSettings.ResumeLayout(false);
@@ -396,6 +407,7 @@
         private System.Windows.Forms.LinkLabel lblToast;
         private System.Windows.Forms.Button btnBrowseFile;
         private System.Windows.Forms.OpenFileDialog dlgBrowseFile;
+        private System.Windows.Forms.Timer tmrToastTimeout;
     }
 }
 

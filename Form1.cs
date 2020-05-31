@@ -13,6 +13,12 @@ using System.Diagnostics;
 using System.ServiceProcess;
 using System.Threading;
 using Microsoft.Win32;
+using IWshRuntimeLibrary;
+
+
+//ToDO
+//Tray Icon Minimization not working correctly
+
 
 namespace EagleEye_Fontend
 {
@@ -28,6 +34,9 @@ namespace EagleEye_Fontend
         public bool Refresh = false;
         public bool TriggerChain;
         public int TriggerInterval;
+
+       private string startUpFolderPath =
+                  Environment.GetFolderPath(Environment.SpecialFolder.Startup);
 
         RegistryKey registryKey = Registry.CurrentUser.OpenSubKey
                     ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
@@ -45,38 +54,147 @@ namespace EagleEye_Fontend
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+            btnTestCommand.Height = edtCommand.Height;
+
+           
+
+            //Checking Command Arguments
             string[] args = Environment.GetCommandLineArgs();
+
             if (args.Length > 1)
             {
-                if (args[1] == "e")
+                if (args[1] == "install")
                 {
-                    pnlError.Visible = true;
+                    InstallEagleEye();
+                }
+
+                if (args.Length >= 4)
+                {
+                    if (args[1] == "toast")
+                    {
+                        Toast(args[2],args[3],false);
+                        ToastCommand = "checkstatus";
+                        return;
+                    }
                 }
             }
-            btnTestCommand.Height = edtCommand.Height;
-            if (registryKey.GetValue("EagleEye") == null)
-            {
-                Toast("EagleEye is not set to run on startup. Click here to add it to startup.", "error");
-                ToastCommand = "startup";
-            }
+            //Checking Command Arguments
             LoadSetup();
+            CheckStatus();
+
         }
 
-        private void Toast(string Message, string MessageType)
+        private void CheckStatus()
         {
-            if (MessageType == "error")
+            //Checking Status of Application on System
+            if (IsInstalled() == true)
             {
-                pnlToast.BackColor = Color.Firebrick;
+                if (System.IO.File.Exists(startUpFolderPath + "\\" +
+                   Application.ProductName + ".lnk") == false)
+                {
+                    Toast("EagleEye is not set to run on startup. Click here to add it to startup.", "error", false);
+                    ToastCommand = "startup";
+                }
             }
-
-            if (MessageType == "success")
+            else
             {
-                pnlToast.BackColor = Color.MediumSeaGreen;
+                Toast("EagleEye is not installed on this system. Click here to install EagleEye now.", "warning", false);
+                ToastCommand = "install";
+            }
+            //Checking Status of Application on System
+        }
+
+        private bool IsInstalled()
+        {
+            string ProgramFilesPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+            string InstallPath = Path.Combine(ProgramFilesPath, "EagleEye");
+            if (System.IO.File.Exists(Path.Combine(InstallPath, "EagleEye.exe")))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private void InstallEagleEye()
+        {
+            try
+            {
+                EagleEye.EnableRaisingEvents = false;
+                string ProgramFilesPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+                string InstallPath = Path.Combine(ProgramFilesPath, "EagleEye");
+                string ExePath = Path.Combine(InstallPath, "EagleEye.exe");
+
+                if (Directory.Exists(InstallPath) == false)
+                {
+                    Directory.CreateDirectory(InstallPath);
+                }
+
+                System.IO.File.Copy(Application.ExecutablePath, Path.Combine(InstallPath, "EagleEye.exe"));
+                if (IsInstalled())
+                {
+                    Log("EagleEye Successfully Installed");
+                    ProcessStartInfo NewProc = new ProcessStartInfo(ExePath);
+                    NewProc.Arguments = "toast \"EagleEye Successfully Installed on the System\" success";
+                    Process.Start(NewProc);
+                    Application.Exit();
+                }
+                else
+                {
+                    Log("EagleEye could not be installed. Unknown Error");
+                    ProcessStartInfo NewProc = new ProcessStartInfo(Application.ExecutablePath);
+                    NewProc.Arguments = "toast \"EagleEye could not be installed. Unknown Error\" error";
+                    Process.Start(NewProc);
+                    Application.Exit();
+                }
+            }
+            catch (Exception e)
+            {
+                Log("EagleEye could not be installed. Error Follows:");
+                Log(e.ToString());
+                ProcessStartInfo NewProc = new ProcessStartInfo(Application.ExecutablePath);
+                NewProc.Arguments = "toast \"EagleEye could not be installed. Error in Log File\" error";
+                Process.Start(NewProc);
+                Application.Exit();
+            }   
+        }
+
+        private void UninstallEagleEye()
+        {
+            EagleEye.EnableRaisingEvents = false;
+            string ProgramFilesPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+            string InstallPath = Path.Combine(ProgramFilesPath, "EagleEye");
+            string ExePath = Path.Combine(InstallPath, "EagleEye.exe");
+        }
+
+        private void Toast(string Message, string MessageType,bool AutoTimeout)
+        {
+            switch (MessageType)
+            {
+                case "error":
+                    pnlToast.BackColor = Color.Firebrick;
+                    break;
+                case "success":
+                    pnlToast.BackColor = Color.MediumSeaGreen;
+                    break;
+                case "warning":
+                    pnlToast.BackColor = Color.FromArgb(255, 180, 0);
+                    break;
+                default:
+                    break;
             }
 
             lblToast.Text = Message;
             lblToast.Location = new Point((pnlToast.Width - lblToast.Width) / 2, lblToast.Location.Y);
             pnlToast.Visible = true;
+
+            if (AutoTimeout == true)
+            {
+                tmrToastTimeout.Enabled = true;
+            }
+            else
+            {
+                this.WindowState = FormWindowState.Normal;
+            }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -114,7 +232,7 @@ namespace EagleEye_Fontend
                 SetupFile.WriteLine(InputInterval);
                 SetupFile.Close();
                 LoadSetup();
-                this.WindowState = FormWindowState.Minimized;
+                //this.WindowState = FormWindowState.Minimized;
             }
             
         }
@@ -130,18 +248,7 @@ namespace EagleEye_Fontend
             sLogFilePath = @"C:\Users\Public\Documents\EagleEye\log.txt";
             Log("EagleEye Started");
 
-            if (Directory.Exists(@"C:\Program Files\EagleEye") == false)
-            {
-                StreamWriter ErrorTxT = new StreamWriter(@"C:\Users\Public\Documents\EagleEyeFatalError.txt");
-                ErrorTxT.WriteLine("Eagle Eye Fatal Error !!:");
-                ErrorTxT.WriteLine("The Eagle Eye Installation is Missing.");
-                ErrorTxT.WriteLine("Please Re-install Eagle Eye.");
-                ErrorTxT.Close();
-                Process.Start("CMD.exe", @"C:\Users\Public\Documents\EagleEyeFatalError.txt");
-                return;
-            }
-
-            if (File.Exists(@"C:\Users\Public\Documents\EagleEye\setup.txt") == false)
+            if (System.IO.File.Exists(@"C:\Users\Public\Documents\EagleEye\setup.txt") == false)
             {
                 pnlError.Visible = true;
                 return;
@@ -150,9 +257,9 @@ namespace EagleEye_Fontend
             {
 
 
-                if (File.Exists(@"C:\Users\Public\Documents\EagleEye\setup.txt"))
+                if (System.IO.File.Exists(@"C:\Users\Public\Documents\EagleEye\setup.txt"))
                 {
-                    using (StreamReader sr = File.OpenText(@"C:\Users\Public\Documents\EagleEye\setup.txt"))
+                    using (StreamReader sr = System.IO.File.OpenText(@"C:\Users\Public\Documents\EagleEye\setup.txt"))
                     {
                         string s = String.Empty;
                         int LineCount = 1;
@@ -222,13 +329,42 @@ namespace EagleEye_Fontend
             
             if (Register)
             {
-                registryKey.SetValue("EagleEye", Application.ExecutablePath);
-                Toast("EagleEye has been added to startup.","success");
+               
+                //From StackOverflow
+                WshShell wshShell = new WshShell();
+
+                IWshRuntimeLibrary.IWshShortcut shortcut;
+                
+                shortcut =
+                  (IWshRuntimeLibrary.IWshShortcut)wshShell.CreateShortcut(
+                    startUpFolderPath + "\\" +
+                    Application.ProductName + ".lnk");
+
+                shortcut.TargetPath = Application.ExecutablePath;
+                shortcut.WorkingDirectory = Application.StartupPath;
+                shortcut.Description = "Launch EagleEye on Startup";
+                shortcut.Save();
+                //From StackOverflow
+
+                if (System.IO.File.Exists(startUpFolderPath + "\\" +
+                   Application.ProductName + ".lnk") == true)
+                {
+                    Toast("EagleEye has been added to startup.", "success",true);
+                    ToastCommand = "";
+                }
+                else
+                {
+                    Toast("EagleEye could not be added to startup. Unknown Error. Click to retry.", "error",false);
+                    ToastCommand = "startup";
+                }
+
+                   
             }
             else
             {
-                registryKey.DeleteValue("EagleEye");
-                Toast("EagleEye has been removed from startup.", "error");
+                System.IO.File.Delete(startUpFolderPath + "\\" +
+                    Application.ProductName + ".lnk");
+                Toast("EagleEye has been removed from startup.", "error",false);
             }
         }
 
@@ -240,9 +376,18 @@ namespace EagleEye_Fontend
 
         private void btnTestCommand_Click(object sender, EventArgs e)
         {
-            ProcessStartInfo NewCmd = new ProcessStartInfo(@edtCommand.Text);
-            NewCmd.Arguments = edtArgs.Text;
-            Process.Start(NewCmd);
+            if ((edtCommand.Text == "") || (edtCommand.Text == " "))
+            {
+                MessageBox.Show("Please Enter a Command to Test","No Command to Test", MessageBoxButtons.OK, MessageBoxIcon.Warning,
+    MessageBoxDefaultButton.Button1);
+            }
+            else
+            {
+                ProcessStartInfo NewCmd = new ProcessStartInfo(@edtCommand.Text);
+                NewCmd.Arguments = edtArgs.Text;
+                Process.Start(NewCmd);
+            }
+            
         }
 
         private void trayIcon_Click(object sender, EventArgs e)
@@ -338,6 +483,25 @@ namespace EagleEye_Fontend
                     RegisterInStartup(true);
                     ToastCommand = "";
                     break;
+                case "install":
+                    try
+                    {
+                        Process NewProc = new Process();
+                        NewProc.StartInfo.FileName = Application.ExecutablePath;
+                        NewProc.StartInfo.Arguments = "install";
+                        NewProc.StartInfo.UseShellExecute = true;
+                        NewProc.StartInfo.Verb = "runas";
+                        NewProc.Start();
+                        Application.Exit();
+                    }
+                    catch (Exception AuthE)
+                    {
+                        MessageBox.Show("An error occurred while trying to install EagleEye:" + Environment.NewLine + AuthE.ToString(),"Unable to Install",MessageBoxButtons.OK,MessageBoxIcon.Error,MessageBoxDefaultButton.Button1);
+                    }               
+                    break;
+                case "checkstatus":
+                    CheckStatus();
+                    break;
                 default:
                     pnlToast.Visible = false;
                     break;
@@ -349,6 +513,21 @@ namespace EagleEye_Fontend
             dlgBrowseFile.InitialDirectory = edtDir.Text;
             dlgBrowseFile.ShowDialog();
             edtFilename.Text = dlgBrowseFile.FileName.Substring(dlgBrowseFile.FileName.LastIndexOf("\\")+1);
+        }
+
+        private void tmrToastTimeout_Tick(object sender, EventArgs e)
+        {
+            lblToast.Text = "";
+            pnlToast.Visible = false;
+            tmrToastTimeout.Enabled = false;
+        }
+
+        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+                if (MessageBox.Show("Are you sure you want to close EagleEye? EagleEye will no longer monitor your file for changes!", "Close EagleEye", MessageBoxButtons.YesNo,MessageBoxIcon.Exclamation,MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.No)
+            {
+                e.Cancel = true;
+            }
         }
     }
 }
