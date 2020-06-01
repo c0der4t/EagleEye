@@ -34,7 +34,6 @@
             this.pnlError = new System.Windows.Forms.Panel();
             this.btnSetupNow = new System.Windows.Forms.Button();
             this.redtErrorMSg = new System.Windows.Forms.RichTextBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnBrowseFile = new System.Windows.Forms.Button();
             this.pnlToast = new System.Windows.Forms.Panel();
             this.lblToast = new System.Windows.Forms.LinkLabel();
@@ -59,16 +58,25 @@
             this.tmrTriggerChain = new System.Windows.Forms.Timer(this.components);
             this.dlgBrowseFile = new System.Windows.Forms.OpenFileDialog();
             this.tmrToastTimeout = new System.Windows.Forms.Timer(this.components);
+            this.pnlNotify = new System.Windows.Forms.Panel();
+            this.lblToastContent = new System.Windows.Forms.Label();
+            this.btnToastButton1 = new System.Windows.Forms.Button();
+            this.btnToastButton2 = new System.Windows.Forms.Button();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pnlSettings.SuspendLayout();
             this.pnlError.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pnlToast.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EagleEye)).BeginInit();
+            this.pnlNotify.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlSettings
             // 
             this.pnlSettings.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.pnlSettings.Controls.Add(this.pnlNotify);
             this.pnlSettings.Controls.Add(this.pnlError);
             this.pnlSettings.Controls.Add(this.btnBrowseFile);
             this.pnlSettings.Controls.Add(this.pnlToast);
@@ -99,9 +107,9 @@
             this.pnlError.Controls.Add(this.btnSetupNow);
             this.pnlError.Controls.Add(this.redtErrorMSg);
             this.pnlError.Controls.Add(this.pictureBox1);
-            this.pnlError.Location = new System.Drawing.Point(0, 0);
+            this.pnlError.Location = new System.Drawing.Point(0, 264);
             this.pnlError.Name = "pnlError";
-            this.pnlError.Size = new System.Drawing.Size(648, 335);
+            this.pnlError.Size = new System.Drawing.Size(140, 71);
             this.pnlError.TabIndex = 11;
             this.pnlError.Visible = false;
             // 
@@ -126,16 +134,6 @@
             this.redtErrorMSg.Text = "EagleEye could not find any setup file.\nWithout the setup file EagleEye will not " +
     "function.\nPlease setup EagleEye now to ensure it functions correctly.\n\nPress [Se" +
     "tup] below so setup EagleEye now.";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::EagleEye_Fontend.Properties.Resources.error;
-            this.pictureBox1.Location = new System.Drawing.Point(35, 86);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(102, 98);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
             // 
             // btnBrowseFile
             // 
@@ -349,6 +347,79 @@
             this.tmrToastTimeout.Interval = 2500;
             this.tmrToastTimeout.Tick += new System.EventHandler(this.tmrToastTimeout_Tick);
             // 
+            // pnlNotify
+            // 
+            this.pnlNotify.BackColor = System.Drawing.Color.Gray;
+            this.pnlNotify.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlNotify.Controls.Add(this.pictureBox2);
+            this.pnlNotify.Controls.Add(this.btnToastButton2);
+            this.pnlNotify.Controls.Add(this.btnToastButton1);
+            this.pnlNotify.Controls.Add(this.lblToastContent);
+            this.pnlNotify.Location = new System.Drawing.Point(52, 53);
+            this.pnlNotify.Name = "pnlNotify";
+            this.pnlNotify.Size = new System.Drawing.Size(531, 234);
+            this.pnlNotify.TabIndex = 20;
+            // 
+            // lblToastContent
+            // 
+            this.lblToastContent.BackColor = System.Drawing.Color.Transparent;
+            this.lblToastContent.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lblToastContent.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblToastContent.ForeColor = System.Drawing.Color.White;
+            this.lblToastContent.Location = new System.Drawing.Point(166, 30);
+            this.lblToastContent.Name = "lblToastContent";
+            this.lblToastContent.Size = new System.Drawing.Size(346, 126);
+            this.lblToastContent.TabIndex = 0;
+            this.lblToastContent.Text = "EagleEye is not installed on the system.\r\nDo you want to install EagleEye permane" +
+    "ntly or run it just this once?";
+            this.lblToastContent.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnToastButton1
+            // 
+            this.btnToastButton1.BackColor = System.Drawing.Color.Transparent;
+            this.btnToastButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnToastButton1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnToastButton1.ForeColor = System.Drawing.Color.White;
+            this.btnToastButton1.Location = new System.Drawing.Point(38, 175);
+            this.btnToastButton1.Name = "btnToastButton1";
+            this.btnToastButton1.Size = new System.Drawing.Size(197, 37);
+            this.btnToastButton1.TabIndex = 21;
+            this.btnToastButton1.Text = "Install EagleEye";
+            this.btnToastButton1.UseVisualStyleBackColor = false;
+            // 
+            // btnToastButton2
+            // 
+            this.btnToastButton2.BackColor = System.Drawing.Color.Transparent;
+            this.btnToastButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnToastButton2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnToastButton2.ForeColor = System.Drawing.Color.White;
+            this.btnToastButton2.Location = new System.Drawing.Point(290, 175);
+            this.btnToastButton2.Name = "btnToastButton2";
+            this.btnToastButton2.Size = new System.Drawing.Size(197, 37);
+            this.btnToastButton2.TabIndex = 22;
+            this.btnToastButton2.Text = "Run EagleEye";
+            this.btnToastButton2.UseVisualStyleBackColor = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::EagleEye_Fontend.Properties.Resources.white_notification;
+            this.pictureBox2.Location = new System.Drawing.Point(23, 30);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(133, 126);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 23;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::EagleEye_Fontend.Properties.Resources.error;
+            this.pictureBox1.Location = new System.Drawing.Point(35, 86);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(102, 98);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -370,9 +441,11 @@
             this.pnlSettings.ResumeLayout(false);
             this.pnlSettings.PerformLayout();
             this.pnlError.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.pnlToast.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.EagleEye)).EndInit();
+            this.pnlNotify.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -408,6 +481,11 @@
         private System.Windows.Forms.Button btnBrowseFile;
         private System.Windows.Forms.OpenFileDialog dlgBrowseFile;
         private System.Windows.Forms.Timer tmrToastTimeout;
+        private System.Windows.Forms.Panel pnlNotify;
+        private System.Windows.Forms.Label lblToastContent;
+        private System.Windows.Forms.Button btnToastButton1;
+        private System.Windows.Forms.Button btnToastButton2;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }
 
