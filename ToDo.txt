@@ -1,0 +1,3 @@
+﻿To-Do
+
+1: When launching install the first window does not close. Solve
