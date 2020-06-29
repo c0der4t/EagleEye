@@ -16,16 +16,12 @@ using Microsoft.Win32;
 using IWshRuntimeLibrary;
 using System.Runtime.InteropServices;
 
-
-//ToDO
-//Tray Icon Minimization not working correctly
-
-
 namespace EagleEye_Fontend
 {
     public partial class frmMain : Form
     {
-        
+        public string VersionString = "AfricanEagle" ;
+        public string VersionCode =  "2020.6.0" ;
 
         public string sDirectory;
         public string FileToWatch;
@@ -35,11 +31,15 @@ namespace EagleEye_Fontend
         public string ToastCommand;
         public bool CanCommand = true;
         public bool Refresh = false;
-        public bool Terminate = false;
+        public bool Terminate;
+        public bool ForceTerminate;
         public bool TriggerChain;
         public int TriggerInterval;
 
-       private string startUpFolderPath =
+        private EventHandler LastNotifyBTN1;
+        private EventHandler LastNotifyBTN2;
+
+        private string startUpFolderPath =
                   Environment.GetFolderPath(Environment.SpecialFolder.Startup);
 
         RegistryKey registryKey = Registry.CurrentUser.OpenSubKey
@@ -48,19 +48,26 @@ namespace EagleEye_Fontend
         public frmMain()
         {
             InitializeComponent();
+            btnNotifyButton1.Click += new EventHandler(ClearNotification);
+            LastNotifyBTN1 = ClearNotification;
+            btnNotifyButton2.Click += new EventHandler(ClearNotification);
+            LastNotifyBTN2 = ClearNotification;
+
+            
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
             dlgBrowseFolder.ShowDialog();
-            edtDir.Text = dlgBrowseFolder.SelectedPath;
+            edtDir.Text = dlgBrowseFolder.SelectedPath;  
         }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
             btnTestCommand.Height = edtCommand.Height;
 
-           
+            lblToast.Text = "EagleEye Version : " + VersionCode + " (" + VersionString + ")";
+
 
             //Checking Command Arguments
             string[] args = Environment.GetCommandLineArgs();
@@ -76,13 +83,13 @@ namespace EagleEye_Fontend
                 {
                     if (args[1] == "toast")
                     {
-                        Notify(args[2], args[3],2000,false,false,"Ok","",ClearNotification,ClearNotification);
+                        Notify(args[2], args[3], 2000, false, false, "Ok", "", ClearNotification, ClearNotification);
                         return;
                     }
                 }
             }
             //Checking Command Arguments
-            
+
             LoadSetup();
             CheckStatus();
 
@@ -134,6 +141,7 @@ namespace EagleEye_Fontend
 
         private void InstallEagleEye()
         {
+
             if (Directory.Exists(@"C:\Users\Public\Documents\EagleEye") == false)
             {
                 Directory.CreateDirectory(@"C:\Users\Public\Documents\EagleEye");
@@ -153,24 +161,22 @@ namespace EagleEye_Fontend
                 }
 
                 System.IO.File.Copy(Application.ExecutablePath, Path.Combine(InstallPath, "EagleEye.exe"));
+
+
                 if (IsInstalled())
                 {
                     Log("EagleEye Successfully Installed");
                     ProcessStartInfo NewProc = new ProcessStartInfo(ExePath);
-                   // (string Message, string MessageType, int MessageTimeout, bool ShowIcon, bool ShowFrontend, string Button1Text, string Button2Text, EventHandler Button1Click, EventHandler Button2Click)
+                    // (string Message, string MessageType, int MessageTimeout, bool ShowIcon, bool ShowFrontend, string Button1Text, string Button2Text, EventHandler Button1Click, EventHandler Button2Click)
                     NewProc.Arguments = "toast \"EagleEye Successfully Installed on the System\" success";
-                    Process.Start(NewProc);
-                    Terminate = true;
-                    Application.Exit();
+                    System.Diagnostics.Process.Start(NewProc);
                 }
                 else
                 {
                     Log("EagleEye could not be installed. Unknown Error");
                     ProcessStartInfo NewProc = new ProcessStartInfo(Application.ExecutablePath);
                     NewProc.Arguments = "toast \"EagleEye could not be installed. Unknown Error\" error";
-                    Process.Start(NewProc);
-                    Terminate = true;
-                    Application.Exit();
+                    System.Diagnostics.Process.Start(NewProc);
                 }
             }
             catch (Exception cError)
@@ -179,10 +185,9 @@ namespace EagleEye_Fontend
                 Log(cError.ToString());
                 ProcessStartInfo NewProc = new ProcessStartInfo(Application.ExecutablePath);
                 NewProc.Arguments = "toast \"EagleEye could not be installed. Error in Log File\" error";
-                Process.Start(NewProc);
-                Terminate = true;
-                Application.Exit();
-            }   
+                System.Diagnostics.Process.Start(NewProc);
+            }
+            ForceExit();
         }
 
         private void UninstallEagleEye()
@@ -205,9 +210,9 @@ namespace EagleEye_Fontend
         /// <param name="Button2Text">Text of button 2 on the notification. If empty button will not be shown.</param>
         /// <param name="Button1Click">Method to be called on button 1 click.</param>
         /// <param name="Button2Click">Method to be called on button 2 click.</param>
-        private void Notify(string Message,string MessageType,int MessageTimeout,bool ShowIcon,bool ShowFrontend,string Button1Text,string Button2Text,EventHandler Button1Click, EventHandler Button2Click)
+        private void Notify(string Message, string MessageType, int MessageTimeout, bool ShowIcon, bool ShowFrontend, string Button1Text, string Button2Text, EventHandler Button1Click, EventHandler Button2Click)
         {
-            
+
             if (ShowIcon)
             {
                 imgNotifyIcon.Visible = ShowIcon;
@@ -228,7 +233,9 @@ namespace EagleEye_Fontend
             if (Button1Text.Length > 0)
             {
                 btnNotifyButton1.Text = Button1Text;
-                btnNotifyButton1.Click += Button1Click;
+                btnNotifyButton1.Click -= new EventHandler(LastNotifyBTN1);
+                btnNotifyButton1.Click += new EventHandler(Button1Click);
+                LastNotifyBTN1 = Button1Click;
                 btnNotifyButton1.Left = 38;
                 btnNotifyButton1.Visible = true;
             }
@@ -240,7 +247,9 @@ namespace EagleEye_Fontend
             if (Button2Text.Length > 0)
             {
                 btnNotifyButton2.Text = Button2Text;
-                btnNotifyButton2.Click += Button2Click;
+                btnNotifyButton2.Click -= new EventHandler(LastNotifyBTN2);
+                btnNotifyButton2.Click += new EventHandler(Button2Click);
+                LastNotifyBTN2 = Button2Click;
                 btnNotifyButton2.Left = 290;
                 btnNotifyButton2.Visible = true;
             }
@@ -293,7 +302,7 @@ namespace EagleEye_Fontend
         }
 
 
-        private void Toast(string Message, string MessageType,bool AutoTimeout)
+        private void Toast(string Message, string MessageType, bool AutoTimeout)
         {
             switch (MessageType)
             {
@@ -364,12 +373,12 @@ namespace EagleEye_Fontend
                 Refresh = false;
                 LoadSetup();
             }
-            
+
         }
 
         private void LoadSetup()
         {
-            
+
             EagleEye.EnableRaisingEvents = false;
             if (Directory.Exists(@"C:\Users\Public\Documents\EagleEye") == false)
             {
@@ -381,7 +390,7 @@ namespace EagleEye_Fontend
             if (System.IO.File.Exists(@"C:\Users\Public\Documents\EagleEye\setup.txt") == false)
             {
                 //string NotifyMsg = "EagleEye could not find any setup file." + Environment.NewLine + "Without the setup file EagleEye will not function." + Environment.NewLine + "Please setup EagleEye now to ensure it functions correctly.";
-               // Notify(NotifyMsg,"error",0,true,true,"Setup Now","Exit",ClearNotification,ForceExit);
+                // Notify(NotifyMsg,"error",0,true,true,"Setup Now","Exit",ClearNotification,ForceExit);
                 return;
             }
             else
@@ -428,7 +437,7 @@ namespace EagleEye_Fontend
                         }
                         sr.Close();
                     }
-                    
+
                 }
                 edtDir.Text = sDirectory;
                 edtFilename.Text = FileToWatch;
@@ -437,7 +446,7 @@ namespace EagleEye_Fontend
                 edtTriggerInterval.Text = Convert.ToString(TriggerInterval);
                 chckbxPreventTriggerChain.Checked = TriggerChain;
 
-                if (System.IO.File.Exists(Path.Combine(sDirectory,FileToWatch)) == true)
+                if (System.IO.File.Exists(Path.Combine(sDirectory, FileToWatch)) == true)
                 {
                     EagleEye.Path = sDirectory;
                     EagleEye.Filter = FileToWatch;
@@ -450,12 +459,12 @@ namespace EagleEye_Fontend
                 }
                 else
                 {
-                    Notify("Unable to locate the target file." + Environment.NewLine + "Directory or file may not exist.","error",0,true,true,"Ok","",ClearNotification,ClearNotification);
+                    Notify("Unable to locate the target file." + Environment.NewLine + "Directory or file may not exist.", "error", 0, true, true, "Ok", "", ClearNotification, ClearNotification);
                 }
-               
 
-                
-                
+
+
+
             }
         }
 
@@ -475,21 +484,21 @@ namespace EagleEye_Fontend
         {
             if ((edtCommand.Text == "") || (edtCommand.Text == " "))
             {
-                MessageBox.Show("Please Enter a Command to Test","No Command to Test", MessageBoxButtons.OK, MessageBoxIcon.Warning,
+                MessageBox.Show("Please Enter a Command to Test", "No Command to Test", MessageBoxButtons.OK, MessageBoxIcon.Warning,
     MessageBoxDefaultButton.Button1);
             }
             else
             {
                 ProcessStartInfo NewCmd = new ProcessStartInfo(@edtCommand.Text);
                 NewCmd.Arguments = edtArgs.Text;
-                Process.Start(NewCmd);
+                System.Diagnostics.Process.Start(NewCmd);
             }
-            
+
         }
 
         private void trayIcon_Click(object sender, EventArgs e)
         {
-           
+
         }
 
         private void frmMain_Resize(object sender, EventArgs e)
@@ -517,7 +526,7 @@ namespace EagleEye_Fontend
 
                 ProcessStartInfo NewCmd = new ProcessStartInfo(@CommandtoEx);
                 NewCmd.Arguments = sCommandArgs;
-                Process.Start(NewCmd);
+                System.Diagnostics.Process.Start(NewCmd);
 
                 Log("Executed command successfully");
                 if (TriggerChain)
@@ -531,7 +540,7 @@ namespace EagleEye_Fontend
             {
                 Log("File Changed. Cannot Execute Command: Trigger Chain Blocked.");
             }
-           
+
         }
 
         private void Log(string sLogMsg)
@@ -568,7 +577,7 @@ namespace EagleEye_Fontend
 
         private void lblToast_TextChanged(object sender, EventArgs e)
         {
-            
+
         }
 
         private void lblToast_Click(object sender, EventArgs e)
@@ -579,12 +588,12 @@ namespace EagleEye_Fontend
         {
             dlgBrowseFile.InitialDirectory = edtDir.Text;
             dlgBrowseFile.ShowDialog();
-            edtFilename.Text = dlgBrowseFile.FileName.Substring(dlgBrowseFile.FileName.LastIndexOf("\\")+1);
+            edtFilename.Text = dlgBrowseFile.FileName.Substring(dlgBrowseFile.FileName.LastIndexOf("\\") + 1);
         }
 
         private void tmrToastTimeout_Tick(object sender, EventArgs e)
         {
-            
+
 
 
             lblToastContent.Text = "";
@@ -595,12 +604,13 @@ namespace EagleEye_Fontend
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (Terminate == false)
+
+            if (!Terminate)
             {
                 e.Cancel = true;
                 MinimizeToTray();
             }
-            
+
         }
 
 
@@ -610,13 +620,13 @@ namespace EagleEye_Fontend
         {
             try
             {
-                Process NewProc = new Process();
+                System.Diagnostics.Process NewProc = new System.Diagnostics.Process();
                 NewProc.StartInfo.FileName = Application.ExecutablePath;
                 NewProc.StartInfo.Arguments = "install";
                 NewProc.StartInfo.UseShellExecute = true;
                 NewProc.StartInfo.Verb = "runas";
                 NewProc.Start();
-                Application.Exit();
+                ForceExit();
             }
             catch (Exception AuthE)
             {
@@ -632,17 +642,17 @@ namespace EagleEye_Fontend
             string ProgramFilesPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
             MarkForDeleteOnReboot(Path.Combine(ProgramFilesPath, "EagleEye"));
 
-            DialogResult ConfirmRestart = MessageBox.Show("A restart is required to complete the uninstall process." + Environment.NewLine + "Restart Now?","Restart Now?",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+            DialogResult ConfirmRestart = MessageBox.Show("A restart is required to complete the uninstall process." + Environment.NewLine + "Restart Now?", "Restart Now?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (ConfirmRestart == DialogResult.Yes)
             {
-                Process.Start("shutdown", "/r /t 0");
+                System.Diagnostics.Process.Start("shutdown", "/r /t 0");
             }
         }
 
         //From Stackoverflow Begin
         private void MarkForDeleteOnReboot(string directoryPath)
         {
-            
+
 
             foreach (string directory in Directory.GetDirectories(directoryPath, "*", SearchOption.TopDirectoryOnly))
             {
@@ -690,7 +700,7 @@ namespace EagleEye_Fontend
             if (System.IO.File.Exists(startUpFolderPath + "\\" +
                Application.ProductName + ".lnk") == true)
             {
-                Notify("EagleEye has been added to startup.","success", 120000,false,false,"Ok","",ClearNotification,ClearNotification);
+                Notify("EagleEye has been added to startup.", "success", 120000, false, false, "Ok", "", ClearNotification, ClearNotification);
                 menuoptionAddStartup.Visible = false;
                 menuoptionRemoveStartup.Visible = true;
             }
@@ -721,13 +731,13 @@ namespace EagleEye_Fontend
         private void ClearNotification(object sender, EventArgs e)
         {
             pnlNotify.Visible = false;
-           
+
         }
 
-        private void ForceExit(object sender, EventArgs e)
+        private void ForceExit()
         {
             Terminate = true;
-            Application.Exit();
+            Close();
         }
 
         private void trayIcon_MouseClick(object sender, MouseEventArgs e)
@@ -740,36 +750,35 @@ namespace EagleEye_Fontend
                 this.WindowState = FormWindowState.Normal;
                 this.BringToFront();
             }
-           
+
         }
 
         private void menuOptionClose_Click(object sender, EventArgs e)
         {
-            DialogResult ConfirmExit = MessageBox.Show("Are you sure you want to close EagleEye. It will no longer monitor your files.","Exit EagleEye ?",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+            DialogResult ConfirmExit = MessageBox.Show("Are you sure you want to close EagleEye. It will no longer monitor your files.", "Exit EagleEye ?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (ConfirmExit == DialogResult.Yes)
             {
-                Terminate = true;
-                this.Close();
+                ForceExit();
             }
-            
+
         }
 
         private void menuoptionRemoveStartup_Click(object sender, EventArgs e)
         {
-            Notify("Removing EagleEye from startup will stop it from monitoring your files automatically." + Environment.NewLine + "Continue?","warning",0,true,true,"Yes","No", RemoveFromStartup, ClearNotification);
+            Notify("Removing EagleEye from startup will stop it from monitoring your files automatically." + Environment.NewLine + "Continue?", "warning", 0, true, true, "Yes", "No", RemoveFromStartup, ClearNotification);
         }
 
         private void menuoptionViewLogs_Click(object sender, EventArgs e)
         {
-            Process.Start(sLogFilePath);
+            System.Diagnostics.Process.Start(sLogFilePath);
         }
 
         private void menuoptionUninstall_Click(object sender, EventArgs e)
         {
             string NotifyMsg = "Are you sure you would like to uninstall EagleEye?" + Environment.NewLine + "This will also remove EagleEye from startup." + Environment.NewLine + "A restart will be required.";
 
-            Notify(NotifyMsg,"neutral",0,true,true,"Uninstall","Cancel", StageUninstall,ClearNotification);
+            Notify(NotifyMsg, "neutral", 0, true, true, "Uninstall", "Cancel", StageUninstall, ClearNotification);
         }
     }
 }

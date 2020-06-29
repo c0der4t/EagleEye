@@ -22,5 +22,29 @@ namespace EagleEye.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("African Eagle")]
+        public string VersionString {
+            get {
+                return ((string)(this["VersionString"]));
+            }
+            set {
+                this["VersionString"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2020.0.0")]
+        public string VersionCode {
+            get {
+                return ((string)(this["VersionCode"]));
+            }
+            set {
+                this["VersionCode"] = value;
+            }
+        }
     }
 }

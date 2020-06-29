@@ -36,6 +36,10 @@
             this.btnNotifyButton2 = new System.Windows.Forms.Button();
             this.btnNotifyButton1 = new System.Windows.Forms.Button();
             this.lblToastContent = new System.Windows.Forms.Label();
+            this.pnlError = new System.Windows.Forms.Panel();
+            this.btnSetupNow = new System.Windows.Forms.Button();
+            this.redtErrorMSg = new System.Windows.Forms.RichTextBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnBrowseFile = new System.Windows.Forms.Button();
             this.pnlToast = new System.Windows.Forms.Panel();
             this.lblToast = new System.Windows.Forms.LinkLabel();
@@ -67,18 +71,14 @@
             this.tmrTriggerChain = new System.Windows.Forms.Timer(this.components);
             this.dlgBrowseFile = new System.Windows.Forms.OpenFileDialog();
             this.tmrToastTimeout = new System.Windows.Forms.Timer(this.components);
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.redtErrorMSg = new System.Windows.Forms.RichTextBox();
-            this.btnSetupNow = new System.Windows.Forms.Button();
-            this.pnlError = new System.Windows.Forms.Panel();
             this.pnlSettings.SuspendLayout();
             this.pnlNotify.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgNotifyIcon)).BeginInit();
+            this.pnlError.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pnlToast.SuspendLayout();
             this.menuTrayIcon.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EagleEye)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.pnlError.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlSettings
@@ -178,6 +178,48 @@
     "ently or run it just this once?";
             this.lblToastContent.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // pnlError
+            // 
+            this.pnlError.Controls.Add(this.btnSetupNow);
+            this.pnlError.Controls.Add(this.redtErrorMSg);
+            this.pnlError.Controls.Add(this.pictureBox1);
+            this.pnlError.Location = new System.Drawing.Point(298, 305);
+            this.pnlError.Name = "pnlError";
+            this.pnlError.Size = new System.Drawing.Size(10, 10);
+            this.pnlError.TabIndex = 11;
+            // 
+            // btnSetupNow
+            // 
+            this.btnSetupNow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSetupNow.Location = new System.Drawing.Point(145, 230);
+            this.btnSetupNow.Name = "btnSetupNow";
+            this.btnSetupNow.Size = new System.Drawing.Size(379, 42);
+            this.btnSetupNow.TabIndex = 2;
+            this.btnSetupNow.Text = "Setup";
+            this.btnSetupNow.UseVisualStyleBackColor = true;
+            this.btnSetupNow.Click += new System.EventHandler(this.btnSetupNow_Click);
+            // 
+            // redtErrorMSg
+            // 
+            this.redtErrorMSg.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.redtErrorMSg.Location = new System.Drawing.Point(185, 70);
+            this.redtErrorMSg.Name = "redtErrorMSg";
+            this.redtErrorMSg.Size = new System.Drawing.Size(379, 132);
+            this.redtErrorMSg.TabIndex = 1;
+            this.redtErrorMSg.Text = "EagleEye could not find any setup file.\nWithout the setup file EagleEye will not " +
+    "function.\nPlease setup EagleEye now to ensure it functions correctly.\n\nPress [Se" +
+    "tup] below so setup EagleEye now.";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::EagleEye.Properties.Resources.error;
+            this.pictureBox1.Location = new System.Drawing.Point(35, 86);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(102, 98);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
             // btnBrowseFile
             // 
             this.btnBrowseFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -211,8 +253,6 @@
             this.lblToast.Name = "lblToast";
             this.lblToast.Size = new System.Drawing.Size(648, 26);
             this.lblToast.TabIndex = 0;
-            this.lblToast.TabStop = true;
-            this.lblToast.Text = "EagleEye Version : 1.2.1.0 (African Eagle)";
             this.lblToast.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblToast.TextChanged += new System.EventHandler(this.lblToast_TextChanged);
             this.lblToast.Click += new System.EventHandler(this.lblToast_Click);
@@ -447,48 +487,6 @@
             this.tmrToastTimeout.Interval = 2500;
             this.tmrToastTimeout.Tick += new System.EventHandler(this.tmrToastTimeout_Tick);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::EagleEye.Properties.Resources.error;
-            this.pictureBox1.Location = new System.Drawing.Point(35, 86);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(102, 98);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            // 
-            // redtErrorMSg
-            // 
-            this.redtErrorMSg.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.redtErrorMSg.Location = new System.Drawing.Point(185, 70);
-            this.redtErrorMSg.Name = "redtErrorMSg";
-            this.redtErrorMSg.Size = new System.Drawing.Size(379, 132);
-            this.redtErrorMSg.TabIndex = 1;
-            this.redtErrorMSg.Text = "EagleEye could not find any setup file.\nWithout the setup file EagleEye will not " +
-    "function.\nPlease setup EagleEye now to ensure it functions correctly.\n\nPress [Se" +
-    "tup] below so setup EagleEye now.";
-            // 
-            // btnSetupNow
-            // 
-            this.btnSetupNow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSetupNow.Location = new System.Drawing.Point(145, 230);
-            this.btnSetupNow.Name = "btnSetupNow";
-            this.btnSetupNow.Size = new System.Drawing.Size(379, 42);
-            this.btnSetupNow.TabIndex = 2;
-            this.btnSetupNow.Text = "Setup";
-            this.btnSetupNow.UseVisualStyleBackColor = true;
-            this.btnSetupNow.Click += new System.EventHandler(this.btnSetupNow_Click);
-            // 
-            // pnlError
-            // 
-            this.pnlError.Controls.Add(this.btnSetupNow);
-            this.pnlError.Controls.Add(this.redtErrorMSg);
-            this.pnlError.Controls.Add(this.pictureBox1);
-            this.pnlError.Location = new System.Drawing.Point(298, 305);
-            this.pnlError.Name = "pnlError";
-            this.pnlError.Size = new System.Drawing.Size(10, 10);
-            this.pnlError.TabIndex = 11;
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -513,11 +511,11 @@
             this.pnlSettings.PerformLayout();
             this.pnlNotify.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imgNotifyIcon)).EndInit();
+            this.pnlError.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.pnlToast.ResumeLayout(false);
             this.menuTrayIcon.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.EagleEye)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.pnlError.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
