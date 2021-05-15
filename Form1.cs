@@ -780,5 +780,10 @@ namespace EagleEye_Fontend
 
             Notify(NotifyMsg, "neutral", 0, true, true, "Uninstall", "Cancel", StageUninstall, ClearNotification);
         }
+
+        private void btnNotifyButton2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

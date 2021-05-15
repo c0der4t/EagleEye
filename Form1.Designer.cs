@@ -107,7 +107,7 @@
             this.pnlSettings.Location = new System.Drawing.Point(0, 0);
             this.pnlSettings.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.pnlSettings.Name = "pnlSettings";
-            this.pnlSettings.Size = new System.Drawing.Size(648, 335);
+            this.pnlSettings.Size = new System.Drawing.Size(646, 327);
             this.pnlSettings.TabIndex = 0;
             // 
             // pnlNotify
@@ -148,6 +148,7 @@
             this.btnNotifyButton2.TabIndex = 22;
             this.btnNotifyButton2.Text = "Run EagleEye";
             this.btnNotifyButton2.UseVisualStyleBackColor = false;
+            this.btnNotifyButton2.Click += new System.EventHandler(this.btnNotifyButton2_Click);
             // 
             // btnNotifyButton1
             // 
@@ -262,7 +263,7 @@
             this.lblms.AutoSize = true;
             this.lblms.Location = new System.Drawing.Point(575, 241);
             this.lblms.Name = "lblms";
-            this.lblms.Size = new System.Drawing.Size(26, 17);
+            this.lblms.Size = new System.Drawing.Size(32, 20);
             this.lblms.TabIndex = 17;
             this.lblms.Text = "ms";
             // 
@@ -271,7 +272,7 @@
             this.chckbxPreventTriggerChain.AutoSize = true;
             this.chckbxPreventTriggerChain.Location = new System.Drawing.Point(11, 237);
             this.chckbxPreventTriggerChain.Name = "chckbxPreventTriggerChain";
-            this.chckbxPreventTriggerChain.Size = new System.Drawing.Size(362, 21);
+            this.chckbxPreventTriggerChain.Size = new System.Drawing.Size(429, 24);
             this.chckbxPreventTriggerChain.TabIndex = 16;
             this.chckbxPreventTriggerChain.Text = "Prevent trigger chains. Execute commands at interval";
             this.chckbxPreventTriggerChain.UseVisualStyleBackColor = true;
@@ -283,7 +284,7 @@
             this.edtTriggerInterval.Location = new System.Drawing.Point(445, 237);
             this.edtTriggerInterval.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.edtTriggerInterval.Name = "edtTriggerInterval";
-            this.edtTriggerInterval.Size = new System.Drawing.Size(125, 23);
+            this.edtTriggerInterval.Size = new System.Drawing.Size(125, 26);
             this.edtTriggerInterval.TabIndex = 15;
             this.edtTriggerInterval.TextChanged += new System.EventHandler(this.edtTriggerInterval_TextChanged);
             // 
@@ -292,7 +293,7 @@
             this.lblArgs.AutoSize = true;
             this.lblArgs.Location = new System.Drawing.Point(424, 182);
             this.lblArgs.Name = "lblArgs";
-            this.lblArgs.Size = new System.Drawing.Size(76, 17);
+            this.lblArgs.Size = new System.Drawing.Size(90, 20);
             this.lblArgs.TabIndex = 14;
             this.lblArgs.Text = "Arguments";
             // 
@@ -301,7 +302,7 @@
             this.edtArgs.Location = new System.Drawing.Point(428, 206);
             this.edtArgs.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.edtArgs.Name = "edtArgs";
-            this.edtArgs.Size = new System.Drawing.Size(131, 23);
+            this.edtArgs.Size = new System.Drawing.Size(131, 26);
             this.edtArgs.TabIndex = 13;
             // 
             // btnTestCommand
@@ -355,7 +356,7 @@
             this.lblCommand.AutoSize = true;
             this.lblCommand.Location = new System.Drawing.Point(7, 182);
             this.lblCommand.Name = "lblCommand";
-            this.lblCommand.Size = new System.Drawing.Size(240, 17);
+            this.lblCommand.Size = new System.Drawing.Size(285, 20);
             this.lblCommand.TabIndex = 5;
             this.lblCommand.Text = "Command to Be Executed on Trigger";
             // 
@@ -364,7 +365,7 @@
             this.lblFileName.AutoSize = true;
             this.lblFileName.Location = new System.Drawing.Point(7, 107);
             this.lblFileName.Name = "lblFileName";
-            this.lblFileName.Size = new System.Drawing.Size(301, 17);
+            this.lblFileName.Size = new System.Drawing.Size(359, 20);
             this.lblFileName.TabIndex = 4;
             this.lblFileName.Text = "Filename of File to Watch (including extension)";
             // 
@@ -373,7 +374,7 @@
             this.lblDir.AutoSize = true;
             this.lblDir.Location = new System.Drawing.Point(7, 29);
             this.lblDir.Name = "lblDir";
-            this.lblDir.Size = new System.Drawing.Size(98, 17);
+            this.lblDir.Size = new System.Drawing.Size(117, 20);
             this.lblDir.TabIndex = 3;
             this.lblDir.Text = "Directory Path";
             // 
@@ -382,7 +383,7 @@
             this.edtCommand.Location = new System.Drawing.Point(11, 206);
             this.edtCommand.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.edtCommand.Name = "edtCommand";
-            this.edtCommand.Size = new System.Drawing.Size(415, 23);
+            this.edtCommand.Size = new System.Drawing.Size(415, 26);
             this.edtCommand.TabIndex = 2;
             // 
             // edtFilename
@@ -390,7 +391,7 @@
             this.edtFilename.Location = new System.Drawing.Point(11, 131);
             this.edtFilename.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.edtFilename.Name = "edtFilename";
-            this.edtFilename.Size = new System.Drawing.Size(582, 23);
+            this.edtFilename.Size = new System.Drawing.Size(582, 26);
             this.edtFilename.TabIndex = 1;
             // 
             // edtDir
@@ -398,7 +399,7 @@
             this.edtDir.Location = new System.Drawing.Point(11, 53);
             this.edtDir.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.edtDir.Name = "edtDir";
-            this.edtDir.Size = new System.Drawing.Size(582, 23);
+            this.edtDir.Size = new System.Drawing.Size(582, 26);
             this.edtDir.TabIndex = 0;
             // 
             // trayIcon
@@ -415,6 +416,7 @@
             // 
             // menuTrayIcon
             // 
+            this.menuTrayIcon.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuTrayIcon.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuoptionInstall,
             this.menuoptionUninstall,
@@ -423,19 +425,19 @@
             this.menuoptionViewLogs,
             this.menuOptionClose});
             this.menuTrayIcon.Name = "menuoptionClose";
-            this.menuTrayIcon.Size = new System.Drawing.Size(254, 136);
+            this.menuTrayIcon.Size = new System.Drawing.Size(312, 148);
             this.menuTrayIcon.Text = "Exit EagleEye";
             // 
             // menuoptionInstall
             // 
             this.menuoptionInstall.Name = "menuoptionInstall";
-            this.menuoptionInstall.Size = new System.Drawing.Size(253, 22);
+            this.menuoptionInstall.Size = new System.Drawing.Size(311, 24);
             this.menuoptionInstall.Text = "📥 Install EagleEye";
             // 
             // menuoptionUninstall
             // 
             this.menuoptionUninstall.Name = "menuoptionUninstall";
-            this.menuoptionUninstall.Size = new System.Drawing.Size(253, 22);
+            this.menuoptionUninstall.Size = new System.Drawing.Size(311, 24);
             this.menuoptionUninstall.Text = "📤 Uninstall EagleEye";
             this.menuoptionUninstall.Visible = false;
             this.menuoptionUninstall.Click += new System.EventHandler(this.menuoptionUninstall_Click);
@@ -443,28 +445,28 @@
             // menuoptionAddStartup
             // 
             this.menuoptionAddStartup.Name = "menuoptionAddStartup";
-            this.menuoptionAddStartup.Size = new System.Drawing.Size(253, 22);
+            this.menuoptionAddStartup.Size = new System.Drawing.Size(311, 24);
             this.menuoptionAddStartup.Text = "➕ Add EagleEye to Startup";
             this.menuoptionAddStartup.Click += new System.EventHandler(this.AddtoStartup);
             // 
             // menuoptionRemoveStartup
             // 
             this.menuoptionRemoveStartup.Name = "menuoptionRemoveStartup";
-            this.menuoptionRemoveStartup.Size = new System.Drawing.Size(253, 22);
+            this.menuoptionRemoveStartup.Size = new System.Drawing.Size(311, 24);
             this.menuoptionRemoveStartup.Text = "⛔ Remove EagleEye From Startup";
             this.menuoptionRemoveStartup.Click += new System.EventHandler(this.menuoptionRemoveStartup_Click);
             // 
             // menuoptionViewLogs
             // 
             this.menuoptionViewLogs.Name = "menuoptionViewLogs";
-            this.menuoptionViewLogs.Size = new System.Drawing.Size(253, 22);
+            this.menuoptionViewLogs.Size = new System.Drawing.Size(311, 24);
             this.menuoptionViewLogs.Text = "📁 Open Logfile";
             this.menuoptionViewLogs.Click += new System.EventHandler(this.menuoptionViewLogs_Click);
             // 
             // menuOptionClose
             // 
             this.menuOptionClose.Name = "menuOptionClose";
-            this.menuOptionClose.Size = new System.Drawing.Size(253, 22);
+            this.menuOptionClose.Size = new System.Drawing.Size(311, 24);
             this.menuOptionClose.Text = "❌ Exit EagleEye";
             this.menuOptionClose.Click += new System.EventHandler(this.menuOptionClose_Click);
             // 
@@ -489,10 +491,10 @@
             // 
             // frmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(648, 335);
+            this.ClientSize = new System.Drawing.Size(646, 327);
             this.ContextMenuStrip = this.menuTrayIcon;
             this.Controls.Add(this.pnlSettings);
             this.DoubleBuffered = true;
