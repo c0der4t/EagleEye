@@ -15,13 +15,14 @@ using System.Threading;
 using Microsoft.Win32;
 using IWshRuntimeLibrary;
 using System.Runtime.InteropServices;
+using System.CodeDom;
 
 namespace EagleEye_Fontend
 {
     public partial class frmMain : Form
     {
-        public string VersionString = "AfricanEagle" ;
-        public string VersionCode =  "2020.6.0" ;
+        public string VersionString = "Twitch" ;
+        public string VersionCode =  "2022.08.18" ;
 
         public string sDirectory;
         public string FileToWatch;
@@ -446,24 +447,15 @@ namespace EagleEye_Fontend
                 edtTriggerInterval.Text = Convert.ToString(TriggerInterval);
                 chckbxPreventTriggerChain.Checked = TriggerChain;
 
-                if (System.IO.File.Exists(Path.Combine(sDirectory, FileToWatch)) == true)
+
+                EagleEye.Path = sDirectory;
+                EagleEye.Filter = FileToWatch;
+                EagleEye.EnableRaisingEvents = true;
+
+                if (Refresh == false)
                 {
-                    EagleEye.Path = sDirectory;
-                    EagleEye.Filter = FileToWatch;
-                    EagleEye.EnableRaisingEvents = true;
-
-                    if (Refresh == false)
-                    {
-                        MinimizeToTray();
-                    }
+                    MinimizeToTray();
                 }
-                else
-                {
-                    Notify("Unable to locate the target file." + Environment.NewLine + "Directory or file may not exist.", "error", 0, true, true, "Ok", "", ClearNotification, ClearNotification);
-                }
-
-
-
 
             }
         }
