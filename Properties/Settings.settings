@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="VersionString" Type="System.String" Scope="User">
-      <Value Profile="(Default)">African Eagle</Value>
+      <Value Profile="(Default)">Twitch</Value>
     </Setting>
     <Setting Name="VersionCode" Type="System.String" Scope="User">
-      <Value Profile="(Default)">2020.0.0</Value>
+      <Value Profile="(Default)">2022.08.18</Value>
     </Setting>
   </Settings>
 </SettingsFile>

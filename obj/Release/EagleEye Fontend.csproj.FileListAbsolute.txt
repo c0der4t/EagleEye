@@ -1,0 +1,13 @@
+C:\Users\monte\Dev\EagleEye\bin\Release\EagleEye.exe.config
+C:\Users\monte\Dev\EagleEye\bin\Release\EagleEye.exe
+C:\Users\monte\Dev\EagleEye\bin\Release\EagleEye.pdb
+C:\Users\monte\Dev\EagleEye\obj\Release\EagleEye Fontend.csproj.AssemblyReference.cache
+C:\Users\monte\Dev\EagleEye\obj\Release\EagleEye Fontend.csproj.SuggestedBindingRedirects.cache
+C:\Users\monte\Dev\EagleEye\obj\Release\Interop.IWshRuntimeLibrary.dll
+C:\Users\monte\Dev\EagleEye\obj\Release\EagleEye Fontend.csproj.ResolveComReference.cache
+C:\Users\monte\Dev\EagleEye\obj\Release\EagleEye_Fontend.frmMain.resources
+C:\Users\monte\Dev\EagleEye\obj\Release\EagleEye.Properties.Resources.resources
+C:\Users\monte\Dev\EagleEye\obj\Release\EagleEye Fontend.csproj.GenerateResource.cache
+C:\Users\monte\Dev\EagleEye\obj\Release\EagleEye Fontend.csproj.CoreCompileInputs.cache
+C:\Users\monte\Dev\EagleEye\obj\Release\EagleEye.exe
+C:\Users\monte\Dev\EagleEye\obj\Release\EagleEye.pdb
